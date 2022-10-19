@@ -1,6 +1,7 @@
 package com.sinem.controller;
 
 import com.sinem.dto.request.UserProfileSaveRequestDto;
+import com.sinem.dto.request.UserProfileUpdateRequestDto;
 import com.sinem.repository.entity.UserProfile;
 import com.sinem.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +34,8 @@ public class UserProfileContoller {
         return ResponseEntity.ok(userProfileService.save(dto));
     }
     @PostMapping(UPDATE)
-    public ResponseEntity<Boolean> update(){
-        return null;
+    public ResponseEntity<Boolean> update(UserProfileUpdateRequestDto dto){
+        return ResponseEntity.ok(userProfileService.update(dto));
     }
     @PostMapping(FIND_BY_ID)
     public ResponseEntity<UserProfile> findById(){

@@ -3,7 +3,7 @@ package com.sinem.service;
 import com.sinem.dto.request.LoginRequestDto;
 import com.sinem.dto.request.RegisterRequestDto;
 import com.sinem.dto.request.UserProfileSaveRequestDto;
-import com.sinem.exception.AuthServiceException;
+import com.sinem.exception.UserServiceException;
 import com.sinem.exception.ErrorType;
 import com.sinem.manager.UserProfileManager;
 import com.sinem.repository.IAuthRepository;
@@ -11,10 +11,8 @@ import com.sinem.repository.entity.Auth;
 import com.sinem.repository.enums.Roles;
 import com.sinem.utility.ServiceManager;
 import com.sinem.utility.TokenManager;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -24,7 +22,9 @@ public class AuthService extends ServiceManager<Auth,Long> {
     private final UserProfileManager userProfileManager;
     private final TokenManager tokenManager;
 
-    public AuthService(IAuthRepository repository,UserProfileManager userProfileManager,TokenManager tokenManager) {
+    public AuthService(IAuthRepository repository,
+                       UserProfileManager userProfileManager,
+                       TokenManager tokenManager) {
         super(repository);
         this.repository = repository;
         this.userProfileManager=userProfileManager;
@@ -55,7 +55,7 @@ public class AuthService extends ServiceManager<Auth,Long> {
     public String doLogin(LoginRequestDto dto){
         Optional<Auth> auth=repository.findOptionalByUsernameAndPassword(
                 dto.getUsername(),dto.getPassword());
-        if(auth.isEmpty()) throw  new AuthServiceException(ErrorType.LOGIN_ERROR_001);
+        if(auth.isEmpty()) throw  new UserServiceException(ErrorType.LOGIN_ERROR_001);
         return tokenManager.generateToken(auth.get().getId());
     }
 }

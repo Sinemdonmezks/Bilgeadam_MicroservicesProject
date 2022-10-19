@@ -23,24 +23,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     @ResponseBody
-    public ResponseEntity<String> handleRuntimeException(RuntimeException ex){
-        return ResponseEntity.badRequest().body("Beklenmeyen bir hata oldu..: "+ex.getMessage());
-    }
-
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    @ResponseBody
-    public final ResponseEntity<ErrorMessage> handlePSQLException(
-            DataIntegrityViolationException exception) {
-        ErrorType errorType = KULLANICI_ZATEN_KAYITLI;
-        return new ResponseEntity<>(createError(errorType, exception), errorType.getHttpStatus());
+    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
+        return ResponseEntity.badRequest().body("Beklenmeyen bir hata oldu..: " + ex.getMessage());
     }
 
     @ExceptionHandler(UserServiceException.class)
     @ResponseBody
-    public ResponseEntity<ErrorMessage> handleMonolitichException(UserServiceException ex){
+    public ResponseEntity<ErrorMessage> handleMonolitichException(UserServiceException ex) {
         ErrorType errorType = ex.getErrorType();
         HttpStatus httpStatus = errorType.getHttpStatus();
-        return new ResponseEntity(createError(errorType,ex),httpStatus);
+        return new ResponseEntity(createError(errorType, ex), httpStatus);
     }
 
 
@@ -97,14 +89,13 @@ public class GlobalExceptionHandler {
     }
 
 
-
     /**
      * Error Messagelarınızı özel bir method içinde create edin. çünkü oluşan hataların
      * log lanması yada farklı işlemelere tabi tutulması için ayrıca bir methosd kullanmak
      * daha doğru olacaktır.
      */
-    private ErrorMessage createError(ErrorType errorType, Exception exception){
-        System.out.println("Hata oluştu..: "+exception.getMessage());
+    private ErrorMessage createError(ErrorType errorType, Exception exception) {
+        System.out.println("Hata oluştu..: " + exception.getMessage());
         return ErrorMessage.builder()
                 .code(errorType.getCode())
                 .message(errorType.getMessage())
