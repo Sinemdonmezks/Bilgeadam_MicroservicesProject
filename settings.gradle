@@ -1,0 +1,5 @@
+rootProject.name = 'Bilgeadam_Microservices'
+include 'auth-service'
+include 'auth-service'
+include 'user-service'
+
