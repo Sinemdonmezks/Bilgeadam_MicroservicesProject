@@ -18,7 +18,7 @@ import static com.sinem.constants.ApiUrls.*;
 @RestController
 @RequestMapping(USER)
 @RequiredArgsConstructor
-public class UserProfileContoller {
+public class UserProfileController {
 /**
  kullanıcı kaydı Auth-service te yapılıyor ve burada User-service e gönderiliyor
  Auth-service ten gelecek bilgiler:

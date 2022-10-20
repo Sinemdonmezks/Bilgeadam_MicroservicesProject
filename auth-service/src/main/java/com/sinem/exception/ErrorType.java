@@ -18,7 +18,9 @@ public enum ErrorType {
     MUSTERI_SILINEMEDI(1004,"Müşteri silinemedi", INTERNAL_SERVER_ERROR),
     SATIS_EKLEME_SORUNU(2005,"Satış Eklenirken zorunlu alanların boş olduğu görüldü.", INTERNAL_SERVER_ERROR),
     KULLANICI_ZATEN_KAYITLI(100,"kullanıcı zaten kayıtlı",INTERNAL_SERVER_ERROR),
-    LOGIN_ERROR_001(190, "Kullanıcı adı yada şifre hatalı", INTERNAL_SERVER_ERROR);
+    LOGIN_ERROR_001(190, "Kullanıcı adı yada şifre hatalı", INTERNAL_SERVER_ERROR),
+    GECERSIZ_TOKEN(101,"bu token geçersiz",INTERNAL_SERVER_ERROR);
+
 
     private int code;
     private String message;
