@@ -16,12 +16,12 @@ import java.util.Optional;
 public class UserProfileService extends ServiceManager<UserProfile,Long> {
 
     private final IUserProfileRepository iUserProfileRepository;
-    private final JwtTokenManager tokenManager;
+    private final JwtTokenManager jwttokenManager;
     public UserProfileService(IUserProfileRepository iUserProfileRepository,
-                              JwtTokenManager tokenManager) {
+                              JwtTokenManager jwttokenManager) {
         super(iUserProfileRepository);
         this.iUserProfileRepository = iUserProfileRepository;
-        this.tokenManager = tokenManager;
+        this.jwttokenManager = jwttokenManager;
     }
 
     public Boolean save(UserProfileSaveRequestDto dto){
@@ -34,7 +34,7 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
     }
 
     public Boolean update(UserProfileUpdateRequestDto dto){
-       Optional<Long>  authid = tokenManager.getByIdFromToken(dto.getToken());
+       Optional<Long>  authid = jwttokenManager.getByIdFromToken(dto.getToken());
         if(authid.isEmpty()) throw new UserServiceException(ErrorType.GECERSIZ_ID);
         Optional<UserProfile> userProfile =
                 iUserProfileRepository.findOptionalByAuthid(authid.get());

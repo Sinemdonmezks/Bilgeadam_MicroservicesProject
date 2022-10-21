@@ -20,7 +20,7 @@ public class JwtTokenManager {
     private String audience;
     @Value("${myjwt.issuer}")
     private String issuer;
-    public String createToken(Long authid){
+    public String createToken(Long authid){//dologin de kullanılır.
         String token=null;
         try{
             /**
