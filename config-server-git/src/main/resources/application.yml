@@ -8,7 +8,7 @@ spring:
     config:
       server:
         git:
-          uri: "https://github.com/Sinemdonmezks/configserverlist.git"
+          uri: "https://github.com/Sinemdonmezks/configserverlist"
           default-label: main
           skip-ssl-validation: true
           username: Sinemdonmezks
