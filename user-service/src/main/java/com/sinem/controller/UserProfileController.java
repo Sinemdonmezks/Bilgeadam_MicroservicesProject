@@ -16,6 +16,23 @@ import static com.sinem.constants.ApiUrls.*;
 @RequestMapping(USER)
 @RequiredArgsConstructor
 public class UserProfileController {
+
+  /**  @GetMapping("/getupper")
+    public ResponseEntity<String> getUpperCasee(String name) {
+        return ResponseEntity.ok(userProfileService.getUpperCasee(name));
+    }
+  */
+    @GetMapping("/getupper")
+    public ResponseEntity<String> getUpperCase(Long authid) {
+        return ResponseEntity.ok(userProfileService.getUpperCase(authid));
+    }
+
+    @GetMapping("/savecachable")
+    public ResponseEntity<Void> updateUser(@RequestBody UserProfile userProfile){
+        userProfileService.updateCacheReset(userProfile);
+        return ResponseEntity.ok().build();
+    }
+
 /**
  kullanıcı kaydı Auth-service te yapılıyor ve burada User-service e gönderiliyor
  Auth-service ten gelecek bilgiler:
@@ -35,8 +52,8 @@ public class UserProfileController {
         return ResponseEntity.ok(userProfileService.update(dto));
     }
     @PostMapping(FIND_BY_ID)
-    public ResponseEntity<UserProfile> findById(){
-        return null;
+    public ResponseEntity<UserProfile> findById(Long id){
+        return ResponseEntity.ok(userProfileService.findById(id));
     }
     @GetMapping(USER_LIST)
     public ResponseEntity<List<UserProfile>> userList(){

@@ -8,6 +8,9 @@ import com.sinem.repository.entity.UserProfile;
 import com.sinem.utility.JwtTokenManager;
 import com.sinem.utility.ServiceManager;
 import com.sinem.utility.TokenManager;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,11 +20,46 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
 
     private final IUserProfileRepository iUserProfileRepository;
     private final JwtTokenManager jwttokenManager;
+    private final CacheManager cacheManager;
     public UserProfileService(IUserProfileRepository iUserProfileRepository,
-                              JwtTokenManager jwttokenManager) {
+                              JwtTokenManager jwttokenManager,CacheManager cacheManager) {
         super(iUserProfileRepository);
         this.iUserProfileRepository = iUserProfileRepository;
         this.jwttokenManager = jwttokenManager;
+        this.cacheManager=cacheManager;
+    }
+
+   /* @Cacheable(value = "uppercasee")
+    public String getUpperCasee(String name) {
+        /**
+         * Bu kısım methodun belli işlem basamaklarını simüle etmek ve
+         * belli zaman alacak işlemleri göstermek için yazılmıştır.
+         */
+      /*  try{
+            Thread.sleep(3000);
+        }catch (Exception e){
+
+        }
+        return name.toUpperCase();
+    }
+    */
+
+
+
+    @Cacheable(value = "uppercase")
+    public String getUpperCase(Long authid) {
+        /**
+         * Bu kısım methodun belli işlem basamaklarını simüle etmek ve
+         * belli zaman alacak işlemleri göstermek için yazılmıştır.
+         */
+        try{
+            Thread.sleep(3000);
+        }catch (Exception e){
+
+        }
+         Optional<UserProfile> user=iUserProfileRepository.findOptionalByAuthid(authid);
+        if(user.isEmpty()) return "";
+        return user.get().getName().toUpperCase();
     }
 
     public Boolean save(UserProfileSaveRequestDto dto){
@@ -47,5 +85,15 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
         profile.setSurname(dto.getSurname());
         save(profile);
         return true;
+    }
+
+    public void updateCacheReset(UserProfile profile){
+        save(profile);
+        /**
+         * bu işlem ilgili method tarafından tutulan
+         * tüm önbelleklenmiş datayı temizler  çok istemediğimiz gerekli olduğunda kullanılması gereken bir yapı
+         * cacheManager.getCache("uppercase") <-bu
+         */
+        cacheManager.getCache("uppercase").evict(profile.getAuthid());
     }
 }
