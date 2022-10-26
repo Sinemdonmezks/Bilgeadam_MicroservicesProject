@@ -3,14 +3,13 @@ import com.sinem.dto.request.UserProfileSaveRequestDto;
 import com.sinem.dto.request.UserProfileUpdateRequestDto;
 import com.sinem.exception.ErrorType;
 import com.sinem.exception.UserServiceException;
-import com.sinem.repository.entity.IUserProfileRepository;
+import com.sinem.manager.ElasticSearchManager;
+import com.sinem.repository.IUserProfileRepository;
 import com.sinem.repository.entity.UserProfile;
 import com.sinem.utility.JwtTokenManager;
 import com.sinem.utility.ServiceManager;
-import com.sinem.utility.TokenManager;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,12 +20,15 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
     private final IUserProfileRepository iUserProfileRepository;
     private final JwtTokenManager jwttokenManager;
     private final CacheManager cacheManager;
+    private final ElasticSearchManager elasticSearchManager;
     public UserProfileService(IUserProfileRepository iUserProfileRepository,
-                              JwtTokenManager jwttokenManager,CacheManager cacheManager) {
+                              JwtTokenManager jwttokenManager,CacheManager cacheManager,
+                              ElasticSearchManager elasticSearchManager) {
         super(iUserProfileRepository);
         this.iUserProfileRepository = iUserProfileRepository;
         this.jwttokenManager = jwttokenManager;
         this.cacheManager=cacheManager;
+        this.elasticSearchManager=elasticSearchManager;
     }
 
    /* @Cacheable(value = "uppercasee")
@@ -63,11 +65,12 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
     }
 
     public Boolean save(UserProfileSaveRequestDto dto){
-        save(UserProfile.builder()
+        UserProfile userProfile=save(UserProfile.builder()
                 .authid(dto.getAuthid())
                 .username(dto.getUsername())
                 .email(dto.getEmail())
                 .build());
+        elasticSearchManager.save(userProfile);
         return true;
     }
 
@@ -84,6 +87,7 @@ public class UserProfileService extends ServiceManager<UserProfile,Long> {
         profile.setName(dto.getName());
         profile.setSurname(dto.getSurname());
         save(profile);
+        elasticSearchManager.save(profile);
         return true;
     }
 
