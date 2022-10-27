@@ -1,5 +1,6 @@
 package com.sinem.controller;
 
+import com.sinem.dto.request.UserProfileRequestDto;
 import com.sinem.repository.entity.UserProfile;
 import com.sinem.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +16,8 @@ public class UserProfileController {
     private final UserProfileService userProfileService;
 
     @PostMapping(SAVE)
-    public ResponseEntity<Void> save(@RequestBody UserProfile userProfile){
-        userProfileService.save(userProfile);
+    public ResponseEntity<Void> save(@RequestBody UserProfileRequestDto dto){
+        userProfileService.save(dto);
         return ResponseEntity.ok().build();
     }
 
@@ -30,4 +31,25 @@ public class UserProfileController {
     public ResponseEntity<Iterable<UserProfile>> getall(){
         return ResponseEntity.ok(userProfileService.findAll());
     }
+
+    /**
+     * sorgu için girilecek parametreler:
+     * ->username
+     * ->email
+     * ->phone
+     * address ve emailinde @gmail olan
+     * 10 adet girdi isteyebilirim.
+     *
+     * geriye dönülecek sonuclar :
+     * ->id,username, name, avatar
+     * ->id , username
+     * ->id,username,phone
+     * 20 farklı dönüş tipi olabilir.
+     *
+     * @return
+     */
+   // public ResponseEntity<?> findByAll(){
+     //   return ResponseEntity.ok(userProfileService.findAll());}
+
+
 }

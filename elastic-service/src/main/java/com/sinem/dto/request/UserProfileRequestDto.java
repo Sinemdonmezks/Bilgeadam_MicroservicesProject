@@ -1,24 +1,18 @@
-package com.sinem.repository.entity;
+package com.sinem.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
 @Builder
-@Document(indexName = "userprofile")
-public class UserProfile {
-    @Id
-    String id;
+public class UserProfileRequestDto {
+
+    Long id;
     Long  userid;
-    /**
-     * auth servisinden kayıt olan kişinin auth id sini burada eşliyoruz
-     */
     Long authid;
     String username;
     String name;
@@ -27,4 +21,5 @@ public class UserProfile {
     String phone;
     String address;
     String avatar;
+
 }

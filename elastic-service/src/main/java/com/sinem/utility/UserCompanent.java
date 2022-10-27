@@ -1,5 +1,6 @@
 package com.sinem.utility;
 
+import com.sinem.dto.request.UserProfileRequestDto;
 import com.sinem.manager.IUserProfileManager;
 import com.sinem.repository.entity.UserProfile;
 import com.sinem.service.UserProfileService;
@@ -17,6 +18,10 @@ private final UserProfileService userProfileService;
     @PostConstruct
     public void firstRun(){
         List<UserProfile> userProfiles= userProfileManager.userList().getBody();
-        userProfileService.saveAll(userProfiles);
+        userProfiles.forEach(userProfile -> {
+            userProfile.setId(null);
+            userProfile.setUserid(Long.getLong(userProfile.getId()));
+            userProfileService.save(userProfile);
+        });
     }
 }

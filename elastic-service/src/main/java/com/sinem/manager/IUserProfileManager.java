@@ -1,5 +1,6 @@
 package com.sinem.manager;
 
+import com.sinem.dto.request.UserProfileRequestDto;
 import com.sinem.repository.entity.UserProfile;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
